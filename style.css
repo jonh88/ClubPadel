@@ -11,22 +11,34 @@
     top: 35px;
     left: 50px;
     opacity: 0.8;
+    border-radius: inherit;
 }
 
 #logo_text{
-    background: #aea5a5;
+    background: rgba(224, 224, 209, 0.8);
+    padding-left: 1rem;
+    margin-top: 1rem;
     position: relative;
     top: 10.7rem;
     display: inline-block;
     width: 40rem;
+    border-radius: inherit;
 }
 
-div h1{
-    /* position: relative;
-    top: 10.7rem; */
+h4{
+    border: 0.1rem solid gray;
+    border-radius: 0.2rem;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    background: #cccccc;
 }
 
-div h3{
-    /* position: relative;
-    top: 10.7rem; */
+#form{
+    width: 50rem;
+    margin-top: 7rem;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    border: 0.1rem solid black;
+    border-radius: 0.2rem;
+    background-color: #c0d0d8;
 }
