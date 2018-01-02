@@ -1,20 +1,71 @@
 'use strict';
 
 var clubPadel = {
-    APIKEY: "AIzaSyBYDpoow_kUqwFHWFfTPPPbiNuemzjFfrE"
+    facilities: [
+        {
+            lat: 40.453082, 
+            lng: -3.688339,
+            desc: `<div id="content">
+                    <div id="siteNotice"></div>
+                    <h3 id="firstHeading" class="firstHeading">Paseo Castellana</h3>
+                    <div id="bodyContent">
+                        <p>Nuestra instalación más céntrica de Madrid</p>
+                        <img src="/assets/pista_castellana.jpg" width=200>
+                    </div>
+                    </div>`
+        },
+        {
+            lat: 40.325743, 
+            lng: -3.714940,
+            desc: `<div id="content">
+                    <div id="siteNotice"></div>
+                    <h3 id="firstHeading" class="firstHeading">Getafe</h3>
+                    <div id="bodyContent">
+                        <p> Una de nuestras pistas exteriores para aprovechar el buen tiempo! </p>
+                        <img src="/assets/pista_exterior.jpg" width=200>
+                    </div>
+                    </div>`
+        },
+        {
+            lat: 40.437244, 
+            lng: -3.599920,
+            desc: `<div id="content">
+                    <div id="siteNotice"></div>
+                    <h3 id="firstHeading" class="firstHeading">Coslada</h3>
+                    <div id="bodyContent">
+                        <p> Pista de cesped natural y totalmente acristalada </p>
+                        <img src="/assets/pista_coslada.jpg" width=200>
+                    </div>
+                    </div>`
+        },
+        {
+            lat: 40.338914, 
+            lng: -3.840511,
+            desc: `<div id="content">
+                    <div id="siteNotice"></div>
+                    <h3 id="firstHeading" class="firstHeading">Alcorcon</h3>
+                    <div id="bodyContent">
+                        <p> Gran pista semicubierta, para que unas simples gotas no te paren! </p>
+                        <img src="/assets/pista_semicubierta.jpg" width=200>
+                    </div>
+                    </div>`
+        },
+        {
+            lat: 40.523160, 
+            lng: -3.898739,
+            desc: `<div id="content">
+                    <div id="siteNotice"></div>
+                    <h3 id="firstHeading" class="firstHeading">Las Rozas</h3>
+                    <div id="bodyContent">
+                        <p> Prueba </p>
+                        <img src="/assets/pista_cubierta.jpg" width=200>
+                    </div>
+                    </div>`
+        }
+    ]
 };
 
-clubPadel.facilities = [
-    {lat: 40.453082, lng: -3.688339},
-    {lat: 40.325743, lng: -3.714940},
-    {lat: 40.437244, lng: -3.599920},
-    {lat: 40.338914, lng: -3.840511},
-    {lat: 40.523160, lng: -3.898739}
-];
-
-clubPadel.goToRegister = function(){
-    
-    
+clubPadel.goToRegister = function(){        
     $('#main').empty();    
     $('#main').append(`
     <form id="form" class="container">
@@ -67,7 +118,7 @@ clubPadel.goToLogin = function(){
                 <input type="text" name="password" class="form-control" placeholder="Contraseña" required>
             </div>                            
             <div class="text-center">                                  
-                <button type="submit" class="btn btn-primary center">Enviar</button>
+                <button id="enviar" type="submit" class="btn btn-primary center">Enviar</button>
             </div>                
         </fieldset>            
     </form>
@@ -143,12 +194,19 @@ clubPadel.initMap = function(){
         center: bernabeu
     });
 
-    for(let coordenate of clubPadel.facilities){
-        let latLong = new google.maps.LatLng(coordenate.lat,coordenate.lng);
+    for(let facility of clubPadel.facilities){
+        let latLong = new google.maps.LatLng(facility.lat,facility.lng);
         let marker = new google.maps.Marker({
             position: latLong,
             map:map
         });
+        let infoWindow = new google.maps.InfoWindow({
+            content: facility.desc,
+            maxWidth: 250
+        });
+        marker.addListener('click', function(){
+            infoWindow.open(map,marker);
+        })
     }
 };
 
