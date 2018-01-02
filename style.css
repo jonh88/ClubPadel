@@ -42,3 +42,38 @@ h4{
     border-radius: 0.2rem;
     background-color: #c0d0d8;
 }
+
+#form-login{
+    width: 25rem;    
+    margin-top: 7rem;
+    margin-bottom: 3rem;
+    padding: 1rem;
+    border: 0.1rem solid black;
+    border-radius: 0.2rem;
+    background-color: #c0d0d8;
+}
+
+.container{
+    margin-top:5em; 
+    margin-bottom:5em;
+}
+
+.map{
+    background-color: #c0d0d8;
+    height: 30rem;
+    margin-top: 7rem;
+    padding: 2rem;
+    border: 0.1rem solid black;
+    border-radius: 0.2rem;
+}
+
+.vertical-center{
+    margin-left: 1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18rem;
+    transform: translate(-50%,-50%);
+    padding: 1rem;
+    border: 0.05rem solid black;
+}
