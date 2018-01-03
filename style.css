@@ -1,17 +1,25 @@
 .jumbotron{
     background-image: url('/assets/inicio.jpg');    
-    margin-top: 6em;
+    margin-top: 2em;
     height: 500px;
     border: 1px solid black;
 }
 
 #logo{
     height: 200px;
-    position: absolute;
-    top: 35px;
-    left: 50px;
+    position: relative;    
+    bottom: 3rem;
+    right: 40.2rem;
     opacity: 0.8;
     border-radius: inherit;
+}
+
+#msgText{
+    border-radius: 0.2rem;    
+    width: 50%;
+    text-align: center;
+    margin-top: 1rem;
+    display: none;
 }
 
 #logo_text{

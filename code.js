@@ -62,7 +62,8 @@ var clubPadel = {
                     </div>
                     </div>`
         }
-    ]
+    ],    
+    endPoint: 'http://localhost:8080/api.clubPadel'
 };
 
 clubPadel.goToRegister = function(){        
@@ -115,10 +116,10 @@ clubPadel.goToLogin = function(){
             </div>
             <div class="form-group">
                 <label for="password">Clave:</label>
-                <input type="text" name="password" class="form-control" placeholder="Contraseña" required>
+                <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
             </div>                            
             <div class="text-center">                                  
-                <button id="enviar" type="submit" class="btn btn-primary center">Enviar</button>
+                <button id="enviar" onclick="clubPadel.login(event)" type="submit" class="btn btn-primary center">Enviar</button>
             </div>                
         </fieldset>            
     </form>
@@ -129,6 +130,67 @@ clubPadel.goToServices = function(){
 
     $(this).parent().siblings().removeClass('active');    
     $(this).parent().addClass('active');    
+
+};
+
+clubPadel.goToHome = function(){
+
+    $('#main').empty();
+
+    var content = `    
+        <header>
+        <div id="divMsg" class="row justify-content-center">                
+            <a id="msgText">Has iniciado sesion!</a>
+        </div>            
+            <div class="jumbotron">
+                <div id="logo_text"> 
+                    <h1 class="display-3">Pádel U.P.M.</h1>
+                    <h3>El club universitario más dinámico del circuito</h3>
+                </div>                
+                <img id="logo" src="/assets/logo_upm.jpg" alt="">
+            </div>            
+        </header>
+        <section>
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4>Clases</h4>
+                    <p>
+                        El conjunto de monitores más cualificados se encargará de darte la formación en cuanto a técnica
+                        requerida en este deporte. Las clases prácticas te permitirán interiorizar los movimientos adecuados
+                        como si fuesen naturales 
+                    </p>
+                    <p>
+                        Las clases colectivas convierten las clases en un espacio dinámico en el que jugar se convierte en una
+                        actividad placentera y divertida.
+                    </p>
+                    <img src="/assets/clases-padel.jpg" class="img-fluid rounded" alt="">
+                </div>
+                <div class="col-lg-4">
+                    <h4>Entrenamientos personalizados</h4>
+                    <p>Si te sientes un campeón, de verdad lo eres o simplemente quieres avanzar rapidamente en la técnica que 
+                        rodea a este deporte te podemos configurar sesiones de entrenamiento a tu medidad con un entrenador personal 
+                        que se encargará de:
+                    </p>
+                    <ul>
+                        <li>Enseñarte la técnica adecuada para mejorar tus golpes</li>
+                        <li>Enseñarte a combinar la potencia con la técnica</li>
+                        <li>Mostrarte como mejorar el rendimiento en equipo</li>
+                        <li>Explicarte como utilizar la presión de los campeonatos en tu beneficio</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h4>Campeonatos</h4>
+                    <p>
+                        El club organiza campeonatos periódicos en los que te puedes divertir al mismo tiempo que mejoras en el 
+                        deporte. Tenemos campeonatos de un día, de fin de semana y ligas regulares. Puedes participar en los torneos
+                        masculinos, femeninos y mixtos.
+                    </p>
+                    <img src="/assets/campeonato-padel.jpg" class="img-fluid rounded" alt="">
+                </div>
+            </div>
+        </section>`;
+
+    $('#main').append(content);
 
 };
 
@@ -210,4 +272,55 @@ clubPadel.initMap = function(){
     }
 };
 
-$(document).ready(clubPadel.initMenu);
+clubPadel.login = function(event){
+    event.preventDefault();
+    var registerLoginItems = $('#reglog').children();            
+    var loginText = $(registerLoginItems[1]).find('a');
+
+    if (clubPadel.logged){               
+        sessionStorage.removeItem('token');
+        $(loginText).html('<i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>&nbsp;Login');
+        $(loginText).unbind('click', clubPadel.login);
+        $(loginText).on('click', clubPadel.goToLogin);
+        clubPadel.logged = false;
+        clubPadel.goToHome();
+        $('#msgText').text('Has cerrado la sesión...');
+        $('#msgText').css('background-color','#da6161');
+        $('#msgText').fadeIn(400);
+        setTimeout(function(){
+            $('#msgText').fadeOut(400);
+        }, 2000);
+        return;
+    }
+
+    var user = $('input[name=user]').val();
+    var pass = $('input[name=password]').val();        
+    $.post(clubPadel.endPoint+'/login',{name:user, password:pass})
+    .done(function(data){
+        if (data.message === 'OK') {
+            sessionStorage.setItem('token',data.token);                        
+            $(loginText).html('<i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>&nbsp;Logout');
+            $(loginText).on('click', clubPadel.login);
+            $('input[name=user]').val('');
+            $('input[name=password]').val('');
+            clubPadel.logged = true;
+            clubPadel.goToHome(); 
+            $('#msgText').text('Has iniciado sesión!');
+            $('#msgText').css('background-color','#52cc52');
+            $('#msgText').fadeIn(400);
+            setTimeout(function(){
+                $('#msgText').fadeOut(400);
+            }, 2000);
+        }else{
+
+        }
+    })
+    .fail(function(error){
+        console.error(error);                
+    });
+};
+
+$(document).ready(function(){
+    clubPadel.goToHome();
+    clubPadel.initMenu();
+});

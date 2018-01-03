@@ -8,6 +8,11 @@ var server = express();
 
 server.use(bodyParser.urlencoded({extended:false}));
 server.use(bodyParser.json());
+server.use(function(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 //gestion de rutas
 server.post('/api.clubPadel/login', function(req, res){
@@ -46,5 +51,5 @@ server.post('/api.clubPadel/register', function(req, res) {
 });
 
 server.listen(8080, function(){
-    console.log('Server listening on port 3000');
+    console.log('Server listening on port 8080');
 });
