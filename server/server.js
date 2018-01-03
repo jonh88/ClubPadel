@@ -11,15 +11,20 @@ server.use(bodyParser.json());
 server.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Expose-Headers", "Authorization");
     next();
 });
 
 //gestion de rutas
 server.post('/api.clubPadel/login', function(req, res){
 
-    var userLogin = req.body;
-    console.log(userLogin);
+    var userLogin = req.body;    
     var users = JSON.parse(fs.readFileSync(fileData, 'utf8'));
+
+    if(!userLogin.name || !userLogin.password){
+        res.status(400).send({message: "Bad request. Missing user or password!"});
+        return;
+    }
     
     var encontrado = false;
     var i = 0;    
@@ -32,9 +37,11 @@ server.post('/api.clubPadel/login', function(req, res){
     }
     
     if (encontrado){
-        res.status(200).send({message: "OK", token: jwt.createToken(userLogin)});
+        res.set('Authorization', 'Bearer '+jwt.createToken(userLogin));
+        res.status(200).send();
+
     }else{
-        res.status(404).send({message: "NOK"});
+        res.status(401).send({message: "Wrong user or password"});
     }    
 });
 

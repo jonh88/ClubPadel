@@ -19,6 +19,8 @@
     width: 50%;
     text-align: center;
     margin-top: 1rem;
+    position: relative;
+    top: 4rem;
     display: none;
 }
 
@@ -53,12 +55,19 @@ h4{
 
 #form-login{
     width: 25rem;    
-    margin-top: 7rem;
-    margin-bottom: 3rem;
+    margin-top: 5rem;
+    
     padding: 1rem;
     border: 0.1rem solid black;
     border-radius: 0.2rem;
     background-color: #c0d0d8;
+}
+
+#ddZone{
+    width: 25rem;
+    border: 0.1rem solid black;
+    border-radius: 0.2rem;
+    text-align: center;
 }
 
 .container{

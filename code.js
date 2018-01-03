@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 var clubPadel = {
     facilities: [
@@ -103,6 +103,7 @@ clubPadel.goToRegister = function(){
 };
 
 clubPadel.goToLogin = function(){
+    
     $('#main').empty();
 
     $('#main').append(`
@@ -122,8 +123,21 @@ clubPadel.goToLogin = function(){
                 <button id="enviar" onclick="clubPadel.login(event)" type="submit" class="btn btn-primary center">Enviar</button>
             </div>                
         </fieldset>            
-    </form>
+    </form>    
+    <div id="ddZone" class="container">
+        <h5>Mueve la imagen a la derecha para asegurar que no eres un robot!</h5>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <img id="imgDraggable" src="./assets/raqueta.jpg" width="50">
+            </div>
+            <div id="divDroppable" class="col-md-6 text-center">
+                Arrastra aquí          
+            </div>
+        </div>
+    </div>
     `);
+
+    clubPadel.initDragAndDrop();
 };
 
 clubPadel.goToServices = function(){
@@ -138,10 +152,7 @@ clubPadel.goToHome = function(){
     $('#main').empty();
 
     var content = `    
-        <header>
-        <div id="divMsg" class="row justify-content-center">                
-            <a id="msgText">Has iniciado sesion!</a>
-        </div>            
+        <header>                   
             <div class="jumbotron">
                 <div id="logo_text"> 
                     <h1 class="display-3">Pádel U.P.M.</h1>
@@ -274,53 +285,78 @@ clubPadel.initMap = function(){
 
 clubPadel.login = function(event){
     event.preventDefault();
-    var registerLoginItems = $('#reglog').children();            
-    var loginText = $(registerLoginItems[1]).find('a');
-
-    if (clubPadel.logged){               
-        sessionStorage.removeItem('token');
-        $(loginText).html('<i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>&nbsp;Login');
-        $(loginText).unbind('click', clubPadel.login);
-        $(loginText).on('click', clubPadel.goToLogin);
-        clubPadel.logged = false;
-        clubPadel.goToHome();
-        $('#msgText').text('Has cerrado la sesión...');
-        $('#msgText').css('background-color','#da6161');
-        $('#msgText').fadeIn(400);
-        setTimeout(function(){
-            $('#msgText').fadeOut(400);
-        }, 2000);
+    
+    if (!clubPadel.allowLogin){
+        clubPadel.showMessage('Asegura que no eres un robot!','#f4b042');
         return;
     }
-
+    
     var user = $('input[name=user]').val();
     var pass = $('input[name=password]').val();        
-    $.post(clubPadel.endPoint+'/login',{name:user, password:pass})
-    .done(function(data){
-        if (data.message === 'OK') {
-            sessionStorage.setItem('token',data.token);                        
-            $(loginText).html('<i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>&nbsp;Logout');
-            $(loginText).on('click', clubPadel.login);
-            $('input[name=user]').val('');
-            $('input[name=password]').val('');
-            clubPadel.logged = true;
-            clubPadel.goToHome(); 
-            $('#msgText').text('Has iniciado sesión!');
-            $('#msgText').css('background-color','#52cc52');
-            $('#msgText').fadeIn(400);
-            setTimeout(function(){
-                $('#msgText').fadeOut(400);
-            }, 2000);
-        }else{
-
-        }
+    $.post(clubPadel.endPoint+'/login',
+    {
+        name:user, 
+        password:pass
     })
-    .fail(function(error){
-        console.error(error);                
+    .done(function(data, status, response){        
+        
+        var token = response.getResponseHeader('authorization').split(' ')[1];
+        sessionStorage.setItem('token',token);
+        var registerLoginItems = $('#reglog').children();            
+        var loginBtn = $(registerLoginItems[1]).find('a');                      
+        $(loginBtn).html('<i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>&nbsp;Logout');
+        $(loginBtn).on('click', clubPadel.logout);        
+        clubPadel.goToHome(); 
+        clubPadel.showMessage('Has iniciado sesión!', '#52cc52');
+
+    })
+    .fail(function(data){
+        clubPadel.showMessage(data.responseJSON.message, '#da6161');                
+    })
+    .always(function(){
+        $('input[name=user]').val('');
+        $('input[name=password]').val('');
     });
+};
+
+clubPadel.logout = function() {
+    var registerLoginItems = $('#reglog').children();            
+    var loginBtn = $(registerLoginItems[1]).find('a');
+                 
+    sessionStorage.removeItem('token');
+    $(loginBtn).html('<i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>&nbsp;Login');
+    $(loginBtn).unbind('click', clubPadel.logout);
+    $(loginBtn).on('click', clubPadel.goToLogin);    
+    clubPadel.goToHome();
+    clubPadel.showMessage('Has cerrado la sesión...', '#da6161');
+};
+
+clubPadel.showMessage = function(msg, color){        
+    $('#msgText').text(msg);
+    $('#msgText').css('display', 'block');
+    $('#msgText').css('background-color', color);
+    $('#msgText').fadeIn(400);
+    setTimeout(function(){
+        $('#msgText').fadeOut(400);
+    }, 2000);
+};
+
+clubPadel.initDragAndDrop = function(){
+    $('#imgDraggable').draggable({
+        containment: '#ddZone',
+
+    });
+    $('#divDroppable').droppable({
+        drop: clubPadel.handleDropEvent
+    });
+};
+
+clubPadel.handleDropEvent = function(event, ui){    
+    clubPadel.allowLogin = true;
+    $('#divDroppable').text('');
 };
 
 $(document).ready(function(){
     clubPadel.goToHome();
-    clubPadel.initMenu();
+    clubPadel.initMenu();    
 });
