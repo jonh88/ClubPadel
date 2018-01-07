@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
     <script src="./libs/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" 
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" 
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" 
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" 
+        crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/32ef6ae2ab.js"></script>    
-    <link rel="stylesheet" href="style.css">
-    <script src="code.js"></script>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="./js/viewTemplates.js"></script>
+    <script src="./js/viewController.js"></script>
+    <script src="./js/clubPadel.js"></script>
+    <script src="./js/main.js"></script>
     <title>Club de padel</title>
 </head>
 <body>    
@@ -22,23 +29,23 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="/index.html">
-            <img src="/assets/navbar_brand.png" alt="Inicio" width="45" height="45">
+            <img src="/assets/imagenes/navbar_brand.png" alt="Inicio" width="45" height="45">
             Pádel U.P.M.
         </a>
         
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul id="sections" class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/index.html">Inicio </a>
+                    <a class="nav-link" href="#Inicio">Inicio </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#Servicios">Servicios </a>
+                    <a class="nav-link" >Servicios </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#Instalaciones">Instalaciones </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Reservar </a>
+                    <a class="nav-link" >Reservar </a>
                 </li>
             </ul>
             <ul id="reglog" class="navbar-nav">
